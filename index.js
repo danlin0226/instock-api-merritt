@@ -11,10 +11,13 @@ app.use(cors())
 const inventoryRoutes = require('./routes/inventoryRoute')
 app.use('/inventories', inventoryRoutes)
 
+const warehouseRoutes = require('./routes/warehouseRoute')
+app.use('/warehouses', warehouseRoutes)
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 5500
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT} `)
+  console.log(`Server is running on ${PORT} `)
 })
