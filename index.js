@@ -1,17 +1,23 @@
-const path = require("node:path");
+const path = require('node:path')
 
-require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+require('dotenv').config({ path: path.resolve(__dirname, '.env') })
 
-const express = require("express");
-const app = express();
-const cors = require("cors");
+const express = require('express')
+const app = express()
+const cors = require('cors')
 
-app.use(cors());
+app.use(cors())
 
-app.use(express.static(path.join(__dirname, "public")));
+const inventoryRoutes = require('./routes/inventoryRoute')
+app.use('/inventories', inventoryRoutes)
 
-const PORT = process.env.PORT || 5500;
+const warehouseRoutes = require('./routes/warehouseRoute')
+app.use('/warehouses', warehouseRoutes)
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+const PORT = process.env.PORT || 5500
 
 app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT} `);
-});
+  console.log(`Server is running on ${PORT} `)
+})
