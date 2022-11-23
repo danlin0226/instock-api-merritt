@@ -19,6 +19,24 @@ exports.index = (_req, res) => {
     .catch((err) => res.status(400).send(`Error retrieving Inventories; ${err}`));
 };
 
+exports.update = (req, res) => {
+  if (!validateBody(req.body)) {
+    return res
+      .status(400)
+      .send("Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty");
+  }
+  const { id } = req.params;
+  knex("inventories")
+    .where({ id: id })
+    .update(req.body)
+    .then((_data) => {
+      knex("inventories")
+        .where({ id: id })
+        .then((data) => res.status(200).json(data[0]));
+    })
+    .catch((err) => res.status(500).send(`Error while updating item ${id}: ${err}`));
+};
+
 exports.add = (req, res) => {
   if (!validateBody(req.body)) {
     return res
