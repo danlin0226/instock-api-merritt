@@ -8,6 +8,9 @@ const cors = require('cors')
 
 app.use(cors())
 
+const inventoryRoutes = require('./routes/inventoryRoute')
+app.use('/inventories', inventoryRoutes)
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 const PORT = process.env.PORT || 5500
