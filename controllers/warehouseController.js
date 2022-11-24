@@ -100,3 +100,17 @@ exports.editWarehouse = (req, res) => {
         .send(`Error updating Warehouse with ID: ${req.params.id} ${err}`)
     );
 };
+
+exports.remove = (req, res) => {
+  knex("warehouses")
+    .delete()
+    .where({ id: req.params.id })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res
+        .status(400)
+        .send(`Error warehouse ${req.params.id} does not exists ${err}`)
+    );
+};
