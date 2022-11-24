@@ -1,7 +1,7 @@
-const knex = require("knex")(require("../knexfile"));
+const knex = require('knex')(require('../knexfile'));
 
 exports.index = (_req, res) => {
-  knex("warehouses")
+  knex('warehouses')
     .then((data) => {
       res.status(200).json(data);
     })
@@ -9,7 +9,7 @@ exports.index = (_req, res) => {
 };
 
 exports.singleWarehouse = (req, res) => {
-  knex("warehouses")
+  knex('warehouses')
     .where({ id: req.params.id })
     .then((data) => {
       if (!data.length) {
@@ -26,8 +26,8 @@ exports.singleWarehouse = (req, res) => {
 };
 
 exports.warehouseInventories = (req, res) => {
-  knex("warehouses")
-    .join("inventories", "inventories.warehouse_id", "warehouses.id")
+  knex('warehouses')
+    .join('inventories', 'inventories.warehouse_id', 'warehouses.id')
     .where({ warehouse_id: req.params.id })
     .then((data) => {
       res.status(200).json(data);
