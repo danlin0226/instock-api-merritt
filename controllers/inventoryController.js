@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
-const knex = require('knex')(require('../knexfile'));
+const { v4: uuidv4 } = require("uuid");
+const knex = require("knex")(require("../knexfile"));
 
 /*
  * @param object representing req.body
@@ -12,7 +12,7 @@ function validateBody(request) {
   return true;
 }
 exports.index = (_req, res) => {
-  knex('inventories')
+  knex("inventories")
     .then((data) => {
       res.status(200).json(data);
     })
@@ -26,15 +26,15 @@ exports.update = (req, res) => {
     return res
       .status(400)
       .send(
-        'Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty'
+        "Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty"
       );
   }
   const { id } = req.params;
-  knex('inventories')
+  knex("inventories")
     .where({ id: id })
     .update(req.body)
     .then((_data) => {
-      knex('inventories')
+      knex("inventories")
         .where({ id: id })
         .then((data) => res.status(200).json(data[0]));
     })
@@ -48,14 +48,14 @@ exports.add = (req, res) => {
     return res
       .status(400)
       .send(
-        'Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty'
+        "Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty"
       );
   }
   const newItemId = uuidv4();
-  knex('inventories')
+  knex("inventories")
     .insert({ ...req.body, id: newItemId })
     .then((_data) => {
-      knex('inventories')
+      knex("inventories")
         .where({ id: newItemId })
         .then((data) => res.status(201).json(data[0]));
     })
@@ -67,7 +67,7 @@ exports.add = (req, res) => {
 };
 
 exports.remove = (req, res) => {
-  knex('inventories')
+  knex("inventories")
     .delete()
     .where({ id: req.params.id })
     .then((data) => {
