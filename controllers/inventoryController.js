@@ -13,21 +13,20 @@ function validateBody(request) {
 }
 exports.index = (_req, res) => {
   knex("inventories")
+    .select("inventories.*")
+    .select("warehouses.warehouse_name")
+    .join("warehouses", "inventories.warehouse_id", "warehouses.id")
     .then((data) => {
       res.status(200).json(data);
     })
-    .catch((err) =>
-      res.status(400).send(`Error retrieving Inventories; ${err}`)
-    );
+    .catch((err) => res.status(400).send(`Error retrieving Inventories; ${err}`));
 };
 
 exports.update = (req, res) => {
   if (!validateBody(req.body)) {
     return res
       .status(400)
-      .send(
-        "Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty"
-      );
+      .send("Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty");
   }
   const { id } = req.params;
   knex("inventories")
@@ -38,18 +37,14 @@ exports.update = (req, res) => {
         .where({ id: id })
         .then((data) => res.status(200).json(data[0]));
     })
-    .catch((err) =>
-      res.status(500).send(`Error while updating item ${id}: ${err}`)
-    );
+    .catch((err) => res.status(500).send(`Error while updating item ${id}: ${err}`));
 };
 
 exports.add = (req, res) => {
   if (!validateBody(req.body)) {
     return res
       .status(400)
-      .send(
-        "Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty"
-      );
+      .send("Bad request: please ensure none of the fields (name, description, category, status, warehouse) are empty");
   }
   const newItemId = uuidv4();
   knex("inventories")
@@ -59,11 +54,7 @@ exports.add = (req, res) => {
         .where({ id: newItemId })
         .then((data) => res.status(201).json(data[0]));
     })
-    .catch((err) =>
-      res
-        .status(500)
-        .send(`Error while adding new inventory item to database: ${err}`)
-    );
+    .catch((err) => res.status(500).send(`Error while adding new inventory item to database: ${err}`));
 };
 
 exports.remove = (req, res) => {
@@ -74,8 +65,6 @@ exports.remove = (req, res) => {
       res.status(200).json(data);
     })
     .catch((err) => {
-      status(400).send(
-        `Error inventory ${req.params.id} does not exists ${err}`
-      );
+      status(400).send(`Error inventory ${req.params.id} does not exists ${err}`);
     });
 };
