@@ -7,6 +7,8 @@ router
   .get(warehouseController.index)
   .post(warehouseController.addWarehouse);
 
+router.route("/active").get(warehouseController.allWarehouses);
+
 router
   .route("/:id")
   .get(warehouseController.singleWarehouse)

@@ -26,6 +26,15 @@ exports.singleWarehouse = (req, res) => {
     );
 };
 
+exports.allWarehouses = (_req, res) => {
+  knex("warehouses")
+    .select("id", "warehouse_name")
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => res.status(500).send(`Error retrieving warehouses ${err}`));
+};
+
 exports.warehouseInventories = (req, res) => {
   knex("warehouses")
     .join("inventories", "inventories.warehouse_id", "warehouses.id")
@@ -53,15 +62,6 @@ exports.addWarehouse = (req, res) => {
     !req.body.contact_position ||
     !req.body.contact_phone ||
     !req.body.contact_email
-
-    // warehouse_name ||
-    //   !req.body.address ||
-    //   !req.body.city ||
-    //   !req.body.country ||
-    //   !req.body.contact_name ||
-    //   !req.body.contact_position ||
-    //   !req.body.contact_phone ||
-    //   !req.body.email
   ) {
     return res
       .status(400)
