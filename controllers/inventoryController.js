@@ -7,7 +7,7 @@ const knex = require("knex")(require("../knexfile"));
  */
 function validateBody(request) {
   for (const property in request) {
-    if (!request[property]) return false;
+    if (!request[property] && property !== "quantity") return false;
   }
   return true;
 }
