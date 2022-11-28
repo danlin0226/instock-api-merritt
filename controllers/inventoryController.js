@@ -26,7 +26,10 @@ exports.index = (_req, res) => {
 
 exports.get = (req, res) => {
   knex("inventories")
-    .where({ id: req.params.id })
+    .select("inventories.*")
+    .select("warehouses.warehouse_name")
+    .join("warehouses", "inventories.warehouse_id", "warehouses.id")
+    .where({ "inventories.id": req.params.id })
     .then((data) => {
       if (!data.length) {
         return res
